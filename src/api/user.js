@@ -15,6 +15,22 @@ export function getInfo() {
   })
 }
 
+export function addUser(data) {
+  return request({
+    url: '/addUser',
+    method: 'post',
+    data
+  })
+}
+
+export function deleteUser(data) {
+  return request({
+    url: '/deleteUser',
+    method: 'post',
+    data
+  })
+}
+
 export function logout() {
   return request({
     url: '/logout',
