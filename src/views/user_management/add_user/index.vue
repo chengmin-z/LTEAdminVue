@@ -53,14 +53,14 @@ export default {
         default:
           break
       }
-      if (username < 4) {
+      if (username.length < 4) {
         this.$message({
           message: '用户名不能少于4个字符',
           type: 'warning'
         })
         return
       }
-      if (password < 4) {
+      if (password.length < 4) {
         this.$message({
           message: '密码不能少于4个字符',
           type: 'warning'

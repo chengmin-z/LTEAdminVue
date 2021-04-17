@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getUserList } from '@/api/user'
 import { MessageBox } from 'element-ui'
 
 export default {
@@ -65,7 +65,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList().then(response => {
+      getUserList().then(response => {
         this.list = response.detail
         this.listLoading = false
       })

@@ -148,7 +148,6 @@ export const asyncRoutes = [
       component: () => import('@/views/user_management/user_list'),
       meta: {
         title: '用户列表',
-        icon: 'table',
         roles: ['admin']
       }
     }, {
@@ -157,7 +156,6 @@ export const asyncRoutes = [
       component: () => import('@/views/user_management/add_user'),
       meta: {
         title: '新增用户',
-        icon: 'user',
         roles: ['admin']
       }
     }
@@ -177,6 +175,35 @@ export const asyncRoutes = [
         roles: ['admin']
       }
     }]
+  },
+  {
+    path: '/data_management',
+    component: Layout,
+    redirect: '/data_management/file_upload',
+    name: 'data_management',
+    meta: {
+      title: '数据管理',
+      icon: 'excel',
+      roles: ['admin', 'user']
+    },
+    children: [{
+      path: 'file_upload',
+      name: 'file_upload',
+      component: () => import('@/views/data_management/file_upload'),
+      meta: {
+        title: '数据导入',
+        roles: ['admin', 'user']
+      }
+    }, {
+      path: 'file_download',
+      name: 'file_download',
+      component: () => import('@/views/data_management/file_download'),
+      meta: {
+        title: '数据导出',
+        roles: ['admin', 'user']
+      }
+    }
+    ]
   },
   { path: '*', redirect: '/404', hidden: true }
 ]

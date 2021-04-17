@@ -15,6 +15,13 @@ export function getInfo() {
   })
 }
 
+export function getUserList() {
+  return request({
+    url: '/getAllUser',
+    method: 'post'
+  })
+}
+
 export function addUser(data) {
   return request({
     url: '/addUser',
