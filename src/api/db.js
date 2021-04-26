@@ -22,3 +22,19 @@ export function getDbInfo() {
     method: 'get'
   })
 }
+
+export function getTableList() {
+  return request({
+    url: '/getTableList',
+    method: 'get'
+  })
+}
+
+export function getDownloadUrl(data) {
+  return request({
+    url: '/exportTable',
+    method: 'post',
+    data
+  })
+}
+

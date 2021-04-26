@@ -74,7 +74,7 @@ export default {
         })
         return
       }
-      if (role === 0) {
+      if (role === '') {
         this.$message({
           message: '请选择用户类型',
           type: 'warning'
