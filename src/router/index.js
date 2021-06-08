@@ -6,11 +6,6 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
-/**
- * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
- */
 export const constantRoutes = [
   {
     path: '/login',
@@ -35,100 +30,6 @@ export const constantRoutes = [
       meta: { title: '首页', icon: 'example' }
     }]
   }
-
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'Example',
-  //   meta: { title: 'Example', icon: 'el-icon-s-help' },
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: () => import('@/views/table/index'),
-  //       meta: { title: 'Table', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: () => import('@/views/tree/index'),
-  //       meta: { title: 'Tree', icon: 'tree' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/form',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'Form',
-  //       component: () => import('@/views/form/index'),
-  //       meta: { title: 'Form', icon: 'form' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/nested',
-  //   component: Layout,
-  //   redirect: '/nested/menu1',
-  //   name: 'Nested',
-  //   meta: {
-  //     title: 'Nested',
-  //     icon: 'nested'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'menu1',
-  //       component: () => import('@/views/nested/menu1/index'), // Parent router-view
-  //       name: 'Menu1',
-  //       meta: { title: 'Menu1' },
-  //       children: [
-  //         {
-  //           path: 'menu1-1',
-  //           component: () => import('@/views/nested/menu1/menu1-1'),
-  //           name: 'Menu1-1',
-  //           meta: { title: 'Menu1-1' }
-  //         },
-  //         {
-  //           path: 'menu1-2',
-  //           component: () => import('@/views/nested/menu1/menu1-2'),
-  //           name: 'Menu1-2',
-  //           meta: { title: 'Menu1-2' },
-  //           children: [
-  //             {
-  //               path: 'menu1-2-1',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-  //               name: 'Menu1-2-1',
-  //               meta: { title: 'Menu1-2-1' }
-  //             },
-  //             {
-  //               path: 'menu1-2-2',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-  //               name: 'Menu1-2-2',
-  //               meta: { title: 'Menu1-2-2' }
-  //             }
-  //           ]
-  //         },
-  //         {
-  //           path: 'menu1-3',
-  //           component: () => import('@/views/nested/menu1/menu1-3'),
-  //           name: 'Menu1-3',
-  //           meta: { title: 'Menu1-3' }
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       path: 'menu2',
-  //       component: () => import('@/views/nested/menu2/index'),
-  //       name: 'Menu2',
-  //       meta: { title: 'menu2' }
-  //     }
-  //   ]
-  // },
 ]
 
 export const asyncRoutes = [
@@ -204,6 +105,79 @@ export const asyncRoutes = [
       }
     }
     ]
+  },
+  {
+    path: '/query_process',
+    component: Layout,
+    redirect: '/query_process/sector_config',
+    name: 'query_process',
+    meta: {
+      title: '业务查询',
+      icon: 'search',
+      roles: ['admin', 'user']
+    },
+    children: [{
+      path: 'sector_config',
+      name: 'sector_config',
+      component: () => import('@/views/query_process/sector_config'),
+      meta: {
+        title: '小区配置信息',
+        roles: ['admin', 'user']
+      }
+    }, {
+      path: 'enodeb_info',
+      name: 'enodeb_info',
+      component: () => import('@/views/query_process/enodeb_info'),
+      meta: {
+        title: '基站eNodeB信息',
+        roles: ['admin', 'user']
+      }
+    },
+    {
+      path: 'prb',
+      name: 'prb',
+      component: () => import('@/views/query_process/prb_info'),
+      meta: {
+        title: '小区KPI指标信息',
+        roles: ['admin', 'user']
+      }
+    }]
+  },
+  {
+    path: '/analysis',
+    component: Layout,
+    redirect: '/analysis/network_structure',
+    name: 'analysis',
+    meta: {
+      title: '业务分析',
+      icon: 'chart',
+      roles: ['admin', 'user']
+    },
+    children: [{
+      path: 'c2i',
+      name: 'c2i',
+      component: () => import('@/views/analysis/C2I'),
+      meta: {
+        title: '主邻小区C2I干扰分析',
+        roles: ['admin', 'user']
+      }
+    }, {
+      path: 'c2i3',
+      name: 'c2i3',
+      component: () => import('@/views/analysis/C2I3'),
+      meta: {
+        title: '干扰小区三元组分析',
+        roles: ['admin', 'user']
+      }
+    }, {
+      path: 'network_structure',
+      name: 'network_structure',
+      component: () => import('@/views/analysis/network_structure'),
+      meta: {
+        title: '网络干扰结构分析',
+        roles: ['admin', 'user']
+      }
+    }]
   },
   { path: '*', redirect: '/404', hidden: true }
 ]

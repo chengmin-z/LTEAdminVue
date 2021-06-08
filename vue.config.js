@@ -26,7 +26,7 @@ module.exports = {
     // before: require('./mock/mock-server.js'),
     proxy: {
       '/dev-api': {
-        target: 'https://www.bupt.site',
+        target: 'http://10.128.254.234:8000',
         changeOrigin: false,
         pathRewrite: {
           '^/dev-api': '/database'

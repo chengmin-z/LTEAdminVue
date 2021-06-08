@@ -58,7 +58,7 @@ export default {
       const tableName = this.$data.form.tableName
       const data = { tableName }
       this.$store.dispatch('db_operate/getDownloadUrl', data).then(res => {
-        const url = 'https://www.bupt.site' + res.detail.downloadUrl
+        const url = 'http://10.128.254.234:8000' + res.detail
         console.log(url)
         this.$data.downloadUrl = url
         this.$data.downLoading = false
