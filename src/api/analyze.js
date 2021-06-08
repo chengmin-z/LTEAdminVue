@@ -22,3 +22,11 @@ export function analysis9() {
     method: 'get'
   })
 }
+
+export function getKPIPRBInfo(data) {
+  return request({
+    url: '/getInfo',
+    method: 'post',
+    data
+  })
+}

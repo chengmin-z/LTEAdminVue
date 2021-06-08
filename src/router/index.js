@@ -134,11 +134,20 @@ export const asyncRoutes = [
       }
     },
     {
-      path: 'prb',
-      name: 'prb',
-      component: () => import('@/views/query_process/prb_info'),
+      path: 'kpi_info',
+      name: 'kpi_info',
+      component: () => import('@/views/query_process/kpi_info'),
       meta: {
         title: '小区KPI指标信息',
+        roles: ['admin', 'user']
+      }
+    },
+    {
+      path: 'prb_info',
+      name: 'prb_info',
+      component: () => import('@/views/query_process/prb_info'),
+      meta: {
+        title: '网元PRB指标信息',
         roles: ['admin', 'user']
       }
     }]

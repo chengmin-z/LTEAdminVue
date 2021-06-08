@@ -2,13 +2,13 @@
   <div class="app-container">
     <el-form ref="form" :model="form" label-width="100px">
       <el-form-item label="查询关键字">
-        <el-select v-model="form.keyword" placeholder="请选择关键字" @change="keywordChange">
+        <el-select v-model="form.keyword" placeholder="请选择关键字" style="width:250px" @change="keywordChange">
           <el-option label="ENODEB_ID" value="ENODEBID" />
           <el-option label="ENODEB_NAME" value="ENODEB_NAME" />
         </el-select>
       </el-form-item>
       <el-form-item label="列表选择">
-        <el-select v-model="form.selectValue" filterable :loading="selectLoading" size="middle" placeholder="请选择">
+        <el-select v-model="form.selectValue" filterable :loading="selectLoading" size="middle" placeholder="请选择" style="width:250px">
           <el-option v-for="item in selectValues" :key="item" :label="item" :value="item" />
         </el-select>
       </el-form-item>

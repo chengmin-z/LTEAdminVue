@@ -7,7 +7,7 @@ import { getToken } from '@/utils/auth'
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   withCredentials: true, // send cookies when cross-domain requests
-  timeout: 0 // request timeout
+  timeout: 60000 // request timeout
 })
 
 // request interceptor
@@ -31,16 +31,9 @@ service.interceptors.response.use(
     const res = response.data
     console.log(res)
     // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 0 && res.code !== 50014) {
-      Message({
-        message: res.message || res.detail || 'Error',
-        type: 'error',
-        duration: 5 * 1000
-      })
-
+    if (res.code !== 0) {
       // Session expired;
       if (res.code === 50014) {
-        // to re-login
         MessageBox.confirm('你已经离线, 你可以选择取消或重新登录', '确认登出', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
@@ -50,8 +43,14 @@ service.interceptors.response.use(
             location.reload()
           })
         }).catch(() => {})
+      } else {
+        Message({
+          message: res.message || res.detail || 'Error',
+          type: 'error',
+          duration: 5 * 1000
+        })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject()
     } else {
       return res
     }

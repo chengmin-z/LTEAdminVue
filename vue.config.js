@@ -23,7 +23,7 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    // before: require('./mock/mock-server.js'),
+    // before: require('./mock/mock-server.js')
     proxy: {
       '/dev-api': {
         target: 'http://10.128.254.234:8000',

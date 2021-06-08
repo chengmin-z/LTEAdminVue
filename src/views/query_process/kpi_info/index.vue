@@ -6,24 +6,23 @@
           <el-option v-for="item in selectPropertys" :key="item" :label="item" :value="item" />
         </el-select>
       </el-form-item>
-      <el-form-item label="网元选择">
-        <el-select v-model="form.selectedNode" filterable :loading="selectLoading" size="middle" style="width:250px" placeholder="请选择">
-          <el-option v-for="item in selectNodes" :key="item" :label="item" :value="item" />
+      <el-form-item label="小区选择">
+        <el-select v-model="form.selectedSector" filterable :loading="selectLoading" size="middle" style="width:250px" placeholder="请选择">
+          <el-option v-for="item in selectSectors" :key="item" :label="item" :value="item" />
         </el-select>
       </el-form-item>
-      <el-form-item label="网元输入">
-        <el-input v-model="form.inputNode" />
+      <el-form-item label="小区输入">
+        <el-input v-model="form.inputSector" />
       </el-form-item>
-      <el-form-item label="时间选择">
+      <el-form-item label="日期选择">
         <el-date-picker
           v-model="form.dateDuration"
           :picker-options="pickerOptions"
-          type="datetimerange"
-          format="yyyy-MM-dd HH"
+          type="daterange"
           value-format="MM/dd/yyyy 00:00:00"
           range-separator="至"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
           :clearable="false"
         />
       </el-form-item>
@@ -51,14 +50,14 @@ export default {
     return {
       chart: null,
       graph: null,
-      selectNodes: [],
+      selectSectors: [],
       selectPropertys: [],
       selectLoading: false,
       currentSectorName: '',
       form: {
         selectedProperty: '',
-        selectedNode: '',
-        inputNode: '',
+        selectedSector: '',
+        inputSector: '',
         mode: '列表选择',
         dateDuration: ['07/17/2020 00:00:00', '07/19/2020 00:00:00']
       },
@@ -86,12 +85,12 @@ export default {
         return
       }
       if (this.form.mode === '列表选择') {
-        if (this.form.selectedNode === '') {
+        if (this.form.selectedSector === '') {
           this.$message.warning('请选择查询小区')
           return
         }
       } else {
-        if (this.form.selectedNode === '') {
+        if (this.form.selectedSector === '') {
           this.$message.warning('请输入查询小区')
           return
         }
@@ -101,7 +100,7 @@ export default {
         return
       }
       const field = this.form.selectedProperty
-      const communityName = this.form.mode === '列表选择' ? this.form.selectedNode : this.form.inputNode
+      const communityName = this.form.mode === '列表选择' ? this.form.selectedSector : this.form.inputSector
       const startTimeStamp = this.form.dateDuration[0]
       const endTimeStamp = this.form.dateDuration[1]
       const info = { startTimeStamp, endTimeStamp, field, communityName }
@@ -137,12 +136,12 @@ export default {
     },
     loadSelectInfo() {
       this.selectLoading = true
-      const type = 'prb'
+      const type = 'kpi'
       const payload = { type }
       this.$store.dispatch('query_operate/getKPIPRBInfo', payload).then(res => {
         const detail = JSON.parse(res.detail)
         this.selectPropertys = detail.available_fields
-        this.selectNodes = detail.community_name
+        this.selectSectors = detail.community_name
         this.selectLoading = false
         console.log(detail)
       }).catch(error => {

@@ -1,5 +1,5 @@
-import { universeQuery } from '@/api/query'
-import { analysisC2I, analysisC2I3 } from '@/api/analyze'
+import { universeQuery, kpiInfoQuery } from '@/api/query'
+import { analysisC2I, analysisC2I3, getKPIPRBInfo } from '@/api/analyze'
 
 const actions = {
   universeQuery({ commit }, dbInfo) {
@@ -13,9 +13,23 @@ const actions = {
       }
       formData.append('tableName', tableName)
       formData.append('currentPage', currentPage)
-      console.log('formData')
       console.log(formData)
       universeQuery(formData).then(response => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  kpiInfoQuery({ commit }, info) {
+    const { startTimeStamp, endTimeStamp, field, communityName } = info
+    return new Promise((resolve, reject) => {
+      const formData = new FormData()
+      formData.append('startTimeStamp', startTimeStamp)
+      formData.append('endTimeStamp', endTimeStamp)
+      formData.append('communityName', communityName)
+      formData.append('field', field)
+      kpiInfoQuery(formData).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)
@@ -40,6 +54,18 @@ const actions = {
       const formData = new FormData()
       formData.append('x', x)
       analysisC2I3(formData).then(response => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  getKPIPRBInfo({ commit }, info) {
+    const { type } = info
+    return new Promise((resolve, reject) => {
+      const formData = new FormData()
+      formData.append('type', type)
+      getKPIPRBInfo(formData).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)

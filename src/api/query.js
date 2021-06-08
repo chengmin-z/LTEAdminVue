@@ -35,3 +35,11 @@ export function getEnodeBName() {
     method: 'get'
   })
 }
+
+export function kpiInfoQuery(data) {
+  return request({
+    url: '/CommunityKPIIndicatorInformationQuery',
+    method: 'post',
+    data
+  })
+}
