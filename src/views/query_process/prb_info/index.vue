@@ -2,12 +2,12 @@
   <div class="app-container">
     <el-form ref="form" :model="form" label-width="100px">
       <el-form-item label="属性选择">
-        <el-select v-model="form.selectedProperty" filterable :loading="selectLoading" size="middle" style="width:250px" placeholder="请选择">
-          <el-option v-for="item in selectPropertys" :key="item" :label="item" :value="item" />
+        <el-select v-model="form.selectedProperty" filterable :loading="selectLoading" size="middle" style="width:320px" placeholder="请选择">
+          <el-option v-for="item in selectPropertys" :key="item" :label="'第' + item + '个PRB上检测的干扰噪声平均值'" :value="item" />
         </el-select>
       </el-form-item>
       <el-form-item label="网元选择">
-        <el-select v-model="form.selectedNode" filterable :loading="selectLoading" size="middle" style="width:250px" placeholder="请选择">
+        <el-select v-model="form.selectedNode" filterable :loading="selectLoading" size="middle" style="width:320px" placeholder="请选择">
           <el-option v-for="item in selectNodes" :key="item" :label="item" :value="item" />
         </el-select>
       </el-form-item>
@@ -17,15 +17,21 @@
       <el-form-item label="时间选择">
         <el-date-picker
           v-model="form.dateDuration"
-          :picker-options="pickerOptions"
           type="datetimerange"
-          format="yyyy-MM-dd HH"
-          value-format="MM/dd/yyyy 00:00:00"
+          :picker-options="pickerOptions"
+          :format="timeFormat[form.timeMode].display_format"
+          :value-format="timeFormat[form.timeMode].value_format"
           range-separator="至"
           start-placeholder="开始时间"
           end-placeholder="结束时间"
           :clearable="false"
         />
+      </el-form-item>
+      <el-form-item label="时间级别">
+        <el-radio-group v-model="form.timeMode" @change="timeModeChange">
+          <el-radio label="小时级别" />
+          <el-radio label="分钟级别" />
+        </el-radio-group>
       </el-form-item>
       <el-form-item label="查询方式">
         <el-radio-group v-model="form.mode">
@@ -38,7 +44,7 @@
       </el-form-item>
     </el-form>
     <div class="cardContainer">
-      <div id="chart" style="height: 50vh; width: 100%;padding: 1px" />
+      <div id="chart" style="height: 45vh; width: 100%;padding: 1px" />
     </div>
   </div>
 </template>
@@ -60,15 +66,28 @@ export default {
         selectedNode: '',
         inputNode: '',
         mode: '列表选择',
-        dateDuration: ['07/17/2020 00:00:00', '07/19/2020 00:00:00']
+        timeMode: '小时级别',
+        dateDuration: ['07/17/2020 00', '07/19/2020 23']
       },
+      minDefaultDuration: ['07/17/2020 18:45:00', '07/19/2020 00:45:00'],
+      hourDefaultDuration: ['07/17/2020 00', '07/19/2020 23'],
       queryLoading: false,
       pickerOptions: {
         disabledDate: time => {
-          const day1 = 2 * 24 * 3600 * 1000
-          const maxTime = 1594915200000 + day1
+          const day1 = 3 * 24 * 3600 * 1000
+          const maxTime = 1594915200000 + day1 - 1
           const minTime = 1594915200000
           return time.getTime() > maxTime || time.getTime() < minTime
+        }
+      },
+      timeFormat: {
+        '分钟级别': {
+          display_format: 'yyyy-MM-dd HH:mm',
+          value_format: 'MM/dd/yyyy HH:mm:ss'
+        },
+        '小时级别': {
+          display_format: 'yyyy-MM-dd HH',
+          value_format: 'MM/dd/yyyy HH'
         }
       }
     }
@@ -80,6 +99,14 @@ export default {
     this.loadSelectInfo()
   },
   methods: {
+    timeModeChange() {
+      console.log('change')
+      if (this.form.timeMode === '小时级别') {
+        this.form.dateDuration = this.hourDefaultDuration
+      } else {
+        this.form.dateDuration = this.minDefaultDuration
+      }
+    },
     onSubmit() {
       if (this.form.selectedProperty === '') {
         this.$message.warning('请选择查询属性')
@@ -100,15 +127,16 @@ export default {
         this.$message.warning('请选择时间范围')
         return
       }
-      const field = this.form.selectedProperty
-      const communityName = this.form.mode === '列表选择' ? this.form.selectedNode : this.form.inputNode
-      const startTimeStamp = this.form.dateDuration[0]
-      const endTimeStamp = this.form.dateDuration[1]
-      const info = { startTimeStamp, endTimeStamp, field, communityName }
-      this.currentSectorName = communityName
+      const id = this.form.selectedProperty
+      const nodeName = this.form.mode === '列表选择' ? this.form.selectedNode : this.form.inputNode
+      const start = this.form.dateDuration[0]
+      const end = this.form.dateDuration[1]
+      const level = this.form.timeMode
+      const info = { start, end, id, nodeName, level }
+      this.currentSectorName = nodeName
       console.log(info)
       this.queryLoading = true
-      this.$store.dispatch('query_operate/kpiInfoQuery', info).then(res => {
+      this.$store.dispatch('query_operate/getPrbInfo', info, level).then(res => {
         console.log(res)
         this.queryLoading = false
         const graph = JSON.parse(res.detail)
@@ -159,7 +187,7 @@ export default {
     },
     paint(graph, chart) {
       const option = {
-        title: { text: this.form.selectedProperty + '折线图' + '（' + this.currentSectorName + '）', left: 'center', textStyle: { fontSize: 22, color: '#606266' }},
+        title: { text: '第' + this.form.selectedProperty + '个PRB上检测的干扰噪声平均值（毫瓦分贝）折线图' + '（' + this.currentSectorName + '）', left: 'center', textStyle: { fontSize: 22, color: '#606266' }},
         xAxis: {
           type: 'category',
           data: graph.time

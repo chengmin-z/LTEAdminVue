@@ -1,4 +1,4 @@
-import { universeQuery, kpiInfoQuery } from '@/api/query'
+import { universeQuery, kpiInfoQuery, prbHourLevel, prbMinLevel } from '@/api/query'
 import { analysisC2I, analysisC2I3, getKPIPRBInfo } from '@/api/analyze'
 
 const actions = {
@@ -23,12 +23,12 @@ const actions = {
   },
   kpiInfoQuery({ commit }, info) {
     const { startTimeStamp, endTimeStamp, field, communityName } = info
+    const formData = new FormData()
+    formData.append('startTimeStamp', startTimeStamp)
+    formData.append('endTimeStamp', endTimeStamp)
+    formData.append('communityName', communityName)
+    formData.append('field', field)
     return new Promise((resolve, reject) => {
-      const formData = new FormData()
-      formData.append('startTimeStamp', startTimeStamp)
-      formData.append('endTimeStamp', endTimeStamp)
-      formData.append('communityName', communityName)
-      formData.append('field', field)
       kpiInfoQuery(formData).then(response => {
         resolve(response)
       }).catch(error => {
@@ -71,6 +71,31 @@ const actions = {
         reject(error)
       })
     })
+  },
+  getPrbInfo({ commit }, info) {
+    const { start, end, id, nodeName, level } = info
+    const formData = new FormData()
+    formData.append('start', start)
+    formData.append('end', end)
+    formData.append('id', id)
+    formData.append('nodeName', nodeName)
+    if (level === '分钟级别') {
+      return new Promise((resolve, reject) => {
+        prbMinLevel(formData).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    } else {
+      return new Promise((resolve, reject) => {
+        prbHourLevel(formData).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    }
   }
 }
 export default {

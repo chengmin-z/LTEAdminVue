@@ -43,3 +43,19 @@ export function kpiInfoQuery(data) {
     data
   })
 }
+
+export function prbHourLevel(data) {
+  return request({
+    url: '/prbHourLevel',
+    method: 'post',
+    data
+  })
+}
+
+export function prbMinLevel(data) {
+  return request({
+    url: '/prbMinLevel',
+    method: 'post',
+    data
+  })
+}

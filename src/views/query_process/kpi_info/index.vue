@@ -2,12 +2,12 @@
   <div class="app-container">
     <el-form ref="form" :model="form" label-width="100px">
       <el-form-item label="属性选择">
-        <el-select v-model="form.selectedProperty" filterable :loading="selectLoading" size="middle" style="width:250px" placeholder="请选择">
+        <el-select v-model="form.selectedProperty" filterable :loading="selectLoading" size="middle" style="width:320px" placeholder="请选择">
           <el-option v-for="item in selectPropertys" :key="item" :label="item" :value="item" />
         </el-select>
       </el-form-item>
       <el-form-item label="小区选择">
-        <el-select v-model="form.selectedSector" filterable :loading="selectLoading" size="middle" style="width:250px" placeholder="请选择">
+        <el-select v-model="form.selectedSector" filterable :loading="selectLoading" size="middle" style="width:320px" placeholder="请选择">
           <el-option v-for="item in selectSectors" :key="item" :label="item" :value="item" />
         </el-select>
       </el-form-item>
@@ -37,7 +37,7 @@
       </el-form-item>
     </el-form>
     <div class="cardContainer">
-      <div id="chart" style="height: 50vh; width: 100%;padding: 1px" />
+      <div id="chart" style="height: 52vh; width: 100%;padding: 1px" />
     </div>
   </div>
 </template>
