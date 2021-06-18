@@ -63,7 +63,7 @@ export default {
         }
       })
       const option = {
-        title: { text: '网络干扰拓扑结构图（模块度: ' + graph.q + '）', left: 'center', textStyle: { fontSize: 22, color: '#606266' }},
+        title: { backgroundColor: '#fff', text: '网络干扰拓扑结构图（模块度: ' + graph.q + '）', left: 'center', textStyle: { fontSize: 22, color: '#606266' }},
         tooltip: {},
         legend: {
           top: 'bottom',
@@ -77,6 +77,7 @@ export default {
         },
         animationDuration: 1500,
         animationEasingUpdate: 'quinticInOut',
+        backgroundColor: '#fff',
         series: [{
           type: 'graph',
           legendHoverLink: false,

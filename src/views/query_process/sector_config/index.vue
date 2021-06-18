@@ -23,6 +23,10 @@
       </el-form-item>
       <el-form-item>
         <el-button :loading="queryLoading" type="primary" @click="onSubmit">查询</el-button>
+        <el-button :disabled="downloadUrl.length === 0" type="primary" size="middle" style="margin-left: 15px;">
+          <a v-if="downloadUrl.length !== 0" target="_blank" :href="downloadUrl"> 导出查询 </a>
+          <a v-else> 导出查询 </a>
+        </el-button>
       </el-form-item>
     </el-form>
 
@@ -48,6 +52,7 @@
 <script>
 
 import { getSectorId, getSectorName } from '@/api/query'
+const defaultSettings = require('/src/settings.js')
 
 export default {
   data() {
@@ -60,6 +65,7 @@ export default {
       },
       selectValues: [],
       queryLoading: false,
+      downloadUrl: '',
       selectLoading: false,
       listLoading: false,
       resultExtraInfo: {
@@ -112,11 +118,13 @@ export default {
         this.$data.resultExtraInfo.currentPage = res.detail.current
         this.$data.resultExtraInfo.totalPage = res.detail.total_pages
         if (res.detail.total_pages === 0) {
+          this.downloadUrl = ''
           this.$message({
             message: '没有匹配的条目',
             type: 'warning'
           })
         } else {
+          this.downloadUrl = defaultSettings.host + res.detail.download_url
           this.$message({
             message: '查询成功',
             type: 'success'

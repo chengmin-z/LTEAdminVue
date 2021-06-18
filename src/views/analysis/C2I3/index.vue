@@ -37,6 +37,8 @@
 </template>
 
 <script>
+const defaultSettings = require('/src/settings.js')
+
 export default {
   data() {
     const validateThreshold = (rule, value, callback) => {
@@ -48,7 +50,7 @@ export default {
     }
     return {
       form: {
-        inputValue: 10
+        inputValue: 30
       },
       loading: false,
       downloadUrl: '',
@@ -78,7 +80,7 @@ export default {
         const detail = JSON.parse(res.detail)
         const data = JSON.parse(detail.data)
         this.listResult = data
-        const download_url = 'http://10.128.254.234:8000' + detail.download_url
+        const download_url = defaultSettings.host + detail.download_url
         this.downloadUrl = download_url
         console.log(data)
         console.log(download_url)

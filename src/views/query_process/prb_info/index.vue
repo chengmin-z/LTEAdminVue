@@ -41,6 +41,10 @@
       </el-form-item>
       <el-form-item>
         <el-button :loading="queryLoading" type="primary" @click="onSubmit">查询</el-button>
+        <el-button :disabled="downloadUrl.length === 0" type="primary" size="middle" style="margin-left: 15px;">
+          <a v-if="downloadUrl.length !== 0" target="_blank" :href="downloadUrl"> 导出查询 </a>
+          <a v-else> 导出查询 </a>
+        </el-button>
       </el-form-item>
     </el-form>
     <div class="cardContainer">
@@ -51,6 +55,7 @@
 
 <script>
 import * as echarts from 'echarts'
+const defaultSettings = require('/src/settings.js')
 
 export default {
   data() {
@@ -60,6 +65,7 @@ export default {
       selectNodes: [],
       selectPropertys: [],
       selectLoading: false,
+      downloadUrl: '',
       currentSectorName: '',
       form: {
         selectedProperty: '',
@@ -143,6 +149,7 @@ export default {
         console.log(graph)
         if (graph.time.length !== 0) {
           this.graph = graph
+          this.downloadUrl = defaultSettings.host + graph.download_url
           this.paint(graph, this.chart)
           this.$message({
             message: '查询成功',
