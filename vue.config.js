@@ -23,13 +23,13 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    // before: require('./mock/mock-server.js'),
+    // before: require('./mock/mock-server.js')
     proxy: {
       '/dev-api': {
-        target: 'https://www.bupt.site',
+        target: defaultSettings.host,
         changeOrigin: false,
         pathRewrite: {
-          '^/dev-api': '/database'
+          '^/dev-api': defaultSettings.root_path
         }
       }
     }

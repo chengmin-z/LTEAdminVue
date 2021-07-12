@@ -1,7 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">当前用户: {{ name }}</div>
-    <div class="dashboard-text">用户类型: {{ role }}</div>
+    <img src="https://cdn11.bigcommerce.com/s-bf3bb/images/stencil/1280w/uploaded_images/4g-vs-lte-blog-header.jpg?t=1609797046"/>
   </div>
 </template>
 
@@ -20,14 +19,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-
-  &-text {
-    font-size: 25px;
-    line-height: 40px;
-  }
+.dashboard-container {
+  height: 100%;
+}
+img {
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  opacity: 0.95;
 }
 </style>

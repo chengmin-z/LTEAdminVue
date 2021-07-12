@@ -30,7 +30,7 @@
       </el-table-column>
       <el-table-column label="操作" width="110" align="center">
         <template slot-scope="scope">
-          {{ scope.row.pageviews }}
+          <el-button :loading="deleteLoading" type="danger" size="small" @click="deleteUser(scope.row.username, scope.$index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -38,7 +38,8 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getUserList } from '@/api/user'
+import { MessageBox } from 'element-ui'
 
 export default {
   filters: {
@@ -54,7 +55,8 @@ export default {
   data() {
     return {
       list: null,
-      listLoading: true
+      listLoading: true,
+      deleteLoading: false
     }
   },
   created() {
@@ -63,9 +65,30 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList().then(response => {
+      getUserList().then(response => {
         this.list = response.detail
         this.listLoading = false
+      })
+    },
+    deleteUser(username, index) {
+      MessageBox.confirm('您确认删除该用户吗？此操作无法还原。', '删除确认', {
+        confirmButtonText: '确认删除',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteLoading = true
+        this.$store.dispatch('user/deleteUser', { username }).then(() => {
+          this.deleteLoading = false
+          this.list.splice(index, 1)
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+        }).catch(() => {
+          this.deleteLoading = false
+        })
+      }).catch(() => {
+        this.deleteLoading = false
       })
     }
   }
